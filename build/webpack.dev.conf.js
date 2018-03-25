@@ -73,7 +73,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       });
     },
     inline:true,
-    port: 8080,
+    port: 8001,
     clientLogLevel: 'warning',
     historyApiFallback: true,
     hot: true,

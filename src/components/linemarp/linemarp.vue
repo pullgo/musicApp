@@ -1,13 +1,19 @@
 <template>
 	<div class="title">
 		<div class="line"></div>
-		<div class="text">优惠信息</div>
+		<div class="text">{{text}}</div>
 		<div class="line"></div>
 	</div>
 </template>
 <script type="text/ecmascript-6">
   export default {
-  	
+  	props:
+  		["text"],
+  	data() {
+  		return{
+
+  		}
+  	},
   }
 
 </script>

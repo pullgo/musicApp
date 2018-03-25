@@ -6,7 +6,9 @@
  			</div>
  			<div class="content">
  				<div class="title">
- 					<span class="brand"></span>
+ 					<div class="icon-wrapper">
+ 						<icon :size="30"></icon>
+ 					</div>
  					<span class="name">{{seller.name}}</span>
  				</div>
  				<div class="description">
@@ -14,7 +16,9 @@
  				</div>
  				<!--如果不用v-if 则会报错 因为在APP.VUE里面首先传入的seller在初始化的时候是空-->
 		        <div v-if="seller.supports" class="support">
-		          <!--<span class="icon" width="12" height="12" :class="classMap[seller.supports[0].type]"></span>-->
+		        	<div class="icon-wrapper">
+		        		<icon :size="12" :class="classMap[seller.supports[0].type]"></icon>
+		        	</div>
 		          <span class="text">{{seller.supports[0].description}}</span>
 		        </div>
  			</div>
@@ -24,7 +28,7 @@
 			</div>
   		</div>
   		<div class="bulletin-wrapper">
-  			<span class="bulletin-title" @click="showDetail"></span><span class="bulletin-text">{{seller.bulletin}}</span>
+  			<div class="icon-wrapper"><icon :size="22" @click="showDetail"></icon></div><span class="bulletin-text">{{seller.bulletin}}</span>
    			<i class="icon-keyboard_arrow_right"></i>
  		</div>
  		<div class="background">
@@ -38,27 +42,17 @@
  					<!--:是传入的意思-->
 			            <star :size="48" :score="seller.score"></star>
  					</div>
- 					<linemarp></linemarp> 					
- 					<!--<div class="title">
- 						<div class="line"></div>
- 						<div class="text">优惠信息</div>
- 						<div class="line"></div>
- 					</div>-->
-		            <ul v-if="seller.supports" class="supports">
+ 					<linemarp text="优惠信息"></linemarp> 					
+ 		            <ul v-if="seller.supports" class="supports">
 		                <li class="support-item" v-for="(item,index) in seller.supports">
-			            	<div class="icon-wrapper" :class="classMap[seller.supports[index].type]">
-			            		<icon :size="16"></icon>
+			            	<div class="icon-wrapper">
+			            		<icon :size="16" :class="classMap[seller.supports[index].type]">
+			            		</icon>
 			            	</div>
-				                	<!--<span class="icon"  width="16" height="16" :class="classMap[seller.supports[index].type]"></span>-->
-				            <span class="text">{{seller.supports[index].description}}</span>
+				            <span class="text">{{seller.supports[2].description}}</span>
 			            </li>
 		            </ul>
-		            <linemarp></linemarp>
-		            <!--<div class="title">
-		              	<div class="line"></div>
-		              	<div class="text">商家公告</div>
-		              	<div class="line"></div>
-		            </div>-->
+		            <linemarp text="商家公告"></linemarp>
 		            <div class="bulletin">
 		            	<p class="content">{{seller.bulletin}}</p>
 		            </div> 					
@@ -128,14 +122,6 @@ export default {
 				font-size: 14px
 				.title
 					margin: 2px 0 8px 0
-					.brand
-						display: inline-block
-						vertical-align: top
-						width: 30px
-						height: 18px
-						bg-image('brand')
-						background-size: 30px 18px
-						background-repeat: no-repeat
 					.name
 						display: inline-block
 						margin-left: 6px
@@ -148,24 +134,9 @@ export default {
 					font-size: 12px	
 				.support
 					margin-top: 4px
-					/*.icon
+					.icon-wrapper
 						display: inline-block
 						vertical-align: top
-						width: 12px
-						height: 12px
-						margin-right: 4px
-						background-size: 12px 12px
-						background-repeat: no-repeat
-						&.decrease
-							bg-image('decrease_1')
-						&.discount
-							bg-image('discount_1')
-						&.guarantee
-							bg-image('guarantee_1')
-						&.invoice
-							bg-image('invoice_1')
-						&.special
-							bg-image('special_1')*/
 			        .text
 				        line-height: 12px
 			        	font-size: 10px
@@ -173,7 +144,6 @@ export default {
 				position: absolute 
 				right: 12px
 				bottom: 14px
-				padding: 2px
 				height: 24px
 				line-height: 24px
 				border-radius: 12px
@@ -181,10 +151,9 @@ export default {
 				vertical-align: middle
 				.count
 					padding-left: 3px
-					display: inline-block
-					vertical-align: middle
 					font-size: 10px 
-					line-height: 24px  
+					line-height: 24px 
+					margin-left: 3px 
 				.icon-keyboard_arrow_right
 					vertical-align: middle
 					line-herght: 24px
@@ -199,15 +168,9 @@ export default {
 			overflow: hidden
 			text-overflow: ellipsis
 			background: rgba(7, 17, 27, 0.2)
-			.bulletin-title
+			.icon-wrapper
 				display: inline-block
-				vertical-align: top
-				margin-top: 8px
-				width: 22px
-				height: 12px 
-				bg-image('bulletin')
-				background-size: 22px 12px
-				background-repeat: no-repeat
+				vertical-align: top			
 			.bulletin-text
 				vertical-align: top
 				margin: 0 4px
@@ -267,7 +230,7 @@ export default {
 								margin-bottom:0
 							.icon-wrapper
 								display: inline-block
-								background: red	
+								vertical-align: top
 							.text
 								display: inline-block
 								line-height: 16px

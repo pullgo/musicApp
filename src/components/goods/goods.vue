@@ -8,7 +8,9 @@
 	   			<!--selectMenu点击滚动事件-->
 	   			<li v-for="(item,index) in goods" class="menu-item" :class="{'current':currentIndex===index}" @click="selectMenu(index,$event)" ref="menuList">
 	   				<span class="text border-1px">
-	   					<span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
+	   					<div class="icon-wrapper">
+		   					<icon :size="12" :class="classMap[item.type]"></icon>{{item.name}}
+	   					</div>
 	   				</span>
 	   			</li>
 	   		</ul>
@@ -43,6 +45,7 @@
 	    </div>
 	   	<!--selectFoods传入购物车组件 实现联动-->	    
 	    <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.inPrice"></shopcart> 
+	    
     <food ref="food" :food="selectedFood"></food>
     </div>
 </template>
@@ -54,6 +57,7 @@
 	import shopcart from 'components/shopcart/shopcart'
 	import cartcontrol from 'components/cartcontrol/cartcontrol'
 	import food from 'components/food/food'
+	import icon from 'components/icon/icon'
 
     export default {
     	props: {
@@ -77,7 +81,7 @@
     				let height2 = this.ListHeight[i + 1];//下一个索引值的高度  低点
     				//是>= 默认第一个是高亮 向下的闭区间>= 一开始就是o 否则不会跟着滚动
     				if(!height2 || ( this.scrollY >= height1 && this.scrollY < height2)) {
-    					this._followScroll(i);
+    					/*this._followScroll(i);*/
     					return i;//最后一个 或者当前区间则返回索引
     				}
     			}
@@ -109,14 +113,13 @@
 		},
 		methods: {
 			//点击左侧 跳到相对应部分 需要跳转对应的话传入index event点击事情
-			selectMenu(index,event) {
+			selectMenu(index, event) {
 			//解决pc端2次  阻止默认的点击事件
 			//better-scroll派发事件就返回电脑本身无_constructed
 				if(!event._constructed) {
 					return;
 				}
-			   	let foodsList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
-
+			   	let foodsList = this.$refs.foodsWrapper;
 			   	let el = foodsList[index];//相应的元素
 			   	this.foodsScroll.scrollToElement(el, 300);//scrollToElement指定跳到哪里 滚动到相应元素
 			}, 
@@ -165,16 +168,17 @@
 			   		this.ListHeight.push(height);
 			   	}
 		    },
-		    _followScroll(index) {
+		    /*_followScroll(index) {
 		        let menuList = this.$refs.menuList;
 		        let el = menuList[index];
-		        this.meunScroll.scrollToElement(el, 300, 0, -100);
-      		}
+		        this.menuScroll.scrollToElement(el, 300, 0, -100);
+      		}*/
 		},
 		components: {
 			shopcart,
 			cartcontrol,
-			food
+			food,
+			icon
 		},
 		events: {//父传子  小球动画
 			'cart.add'(target) {//父
@@ -202,7 +206,7 @@
 			.menu-item
 				display: table //一行或者多行垂直居中
 				height: 54px
-				width: 56px
+				width: 60px
 				line-height: 14px
 				padding: 0 12px//居中
 				&.current
@@ -211,32 +215,16 @@
 					margin-top: -1px//盖住
 					background: #fff
 					font-weight: 700
-					.text
-						border-none()
-				.icon
-		            display: inline-block
-		            vertical-align: top
-		            width: 12px
-		            height: 12px
-		            margin-right: 2px
-		            background-size: 12px 12px
-		            background-repeat: no-repeat
-		            &.decrease
-		              bg-image('decrease_3')
-		            &.discount
-		              bg-image('discount_3')
-		            &.guarantee
-		              bg-image('guarantee_3')
-		            &.invoice
-		              bg-image('invoice_3')
-		            &.special
-		              bg-image('special_3')
-		        .text
-		        	display: table-cell//格子
-		        	width: 56px
-		        	vertical-align: middle//垂直居中
-		        	border-1px(rgba(7, 17, 27, 0.1))
-		        	font-size: 12px
+				.text
+					border-none()
+					display: table-cell//格子
+					width: 56px
+					vertical-align: middle//垂直居中
+					border-1px(rgba(7, 17, 27, 0.1))
+					font-size: 12px
+					.icon-wrapper
+						display: inline-block
+						vertical-align: top
 		.foods-wrapper
 			flex: 1
 			overflow: hidden

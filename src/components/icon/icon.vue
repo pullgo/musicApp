@@ -10,9 +10,6 @@ export default {
       type: Number
     }
   },
-  /*created() {
-    this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
-  },*/
   computed: {
     iconType() {
       return 'icon-' + this.size;
@@ -38,7 +35,6 @@ export default {
       width: 16px
       height: 16px
       vertical-align: top
-      //margin-right: 6px
       background-size: 16px 16px
       background-repeat: no-repeat
       &.decrease
@@ -51,14 +47,12 @@ export default {
         bg-image('invoice_2')
       &.special
         bg-image('special_2')
-  &.icon-12
-    background-size: 16px 16px
-    .icon-item
+    &.icon-12
+      background-size: 12px 12px
       display: inline-block 
       width: 12px
       height: 12px
       vertical-align: top
-      margin-right: 2px
       background-size: 12px 12px
       background-repeat: no-repeat
       &.decrease
@@ -71,5 +65,23 @@ export default {
         bg-image('invoice_3')
       &.special
         bg-image('special_3')
+    &.icon-22//公告icon
+      display: inline-block
+      vertical-align: top
+      margin-top: 8px
+      width: 22px
+      height: 12px 
+      bg-image('bulletin')
+      background-size: 22px 12px
+      background-repeat: no-repeat
+    &.icon-30//header icon
+      display: inline-block
+      vertical-align: top
+      width: 30px
+      height: 18px
+      bg-image('brand')
+      background-size: 30px 18px
+      background-repeat: no-repeat
+
 
 </style>

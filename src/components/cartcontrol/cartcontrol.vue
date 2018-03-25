@@ -81,7 +81,7 @@
         transition: all 3s linear
       &.move-enter, &.move-leave-active// 移除动画和开始动画
         opacity: 0
-        transform: translate3d(24px, 0, 0)//x轴滚过去
+        transform: translate3d(30px, 0, 0)//x轴滚过去
         .inner
           transfrom: rotate(180dg)    
     .cart-count

@@ -22,7 +22,7 @@
       <!--购物车小球飞的效果-->
       <div class="ball-container">
         <div v-for="ball in balls">
-          <transition name="drop">
+          <transition name="drop" @before-enter="beforeDrop" @enter="dropping" @after-enter="afterDrop">
             <div class="ball" v-show="ball.show">
               <div class="inner inner-hook"></div>
             </div>
@@ -33,7 +33,7 @@
     <!--购物车详情页-->    
         <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
-            <h1 class="title">购物车</h1>
+            <span class="list-title">购物车</span>
             <span class="empty" @click="empty">清空</span>
           </div>
           <div class="list-content" ref="listContent">
@@ -134,10 +134,10 @@
       },
       //去结算
       payClass() {
-        if (this.totalPrice < this.minPrice) {
-          return 'not-enough';
-        } else {
+        if (this.totalPrice > this.minPrice) {
           return 'enough';
+        } else {
+          return 'not-enough';
         }
       },
       //判断购物车菜单师傅折叠状态
@@ -240,7 +240,6 @@
           el.style.display = 'none';
         }
       }
-  
     },
     components: {
       cartcontrol
@@ -339,11 +338,11 @@
             color: #fff
     .ball-container
       .ball
-        position: fixed//相对于市口动画
+        position: fixed//相对于视口动画
         left: 32px
         bottom: 22px
         z-index: 200
-        //all 0.4s晃动效果无抛物线效果需要使用 cubic-bezier.com贝塞尔曲线
+        //all 0.4s晃动效果无抛物线效果需要使用cubic-bezier.com贝塞尔曲线
         &.drop-transtion//bug 少了这行
           transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41)
           .inner
@@ -369,7 +368,7 @@
         padding: 0 18px
         background: #f3f5f7
         border-bottom: 1px solid rgba(7, 17, 27, 0.1)
-        .title
+        .list-title
           float: left
           font-size: 14px
           color: rgb(7, 17, 27)
@@ -377,7 +376,6 @@
           float: right
           font-size: 12px
           color: rgb(0, 160, 220)
-
       .list-content
         padding: 0 18px
         max-height: 217px
