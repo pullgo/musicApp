@@ -1,37 +1,52 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Goods from 'components/goods/goods'
-import Ratings from 'components/ratings/ratings'
-import Seller from 'components/seller/seller'
+import Router from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-export default new VueRouter({
-    linkActiveClass: 'active',
+const Recommend = (resolve) => {
+	import('components/recommend/recommend').then((module) => {
+		resolve(module)
+	})
+}
+const Singer = (resolve) => {
+	import('components/singer/singer').then((module) => {
+		resolve(module)
+	})
+}
+const Rank = (resolve) => {
+	import('components/rank/rank').then((module) => {
+		resolve(module)
+	})
+}
+const Search = (resolve) => {
+	import('components/search/search').then((module) => {
+		resolve(module)
+	})
+}
+
+
+export default new Router({
 	routes: [
-		  {
-		   path:'/goods',
-		   component: Goods
-		   },
-		  {
-		  	path:'/ratings',
-		    component: Ratings
-		  },
-		  {
-		  	path:'/seller', 
-		  	component: Seller
-		  },
-		  {//404路由 访问不存在 直接跳转
-		  	path:'*',
-		  	redirect: '/goods'
-		  }
+		{
+			path: "/",
+			redirect: "/recommend"//此处需要引号
+		},
+		{
+			path: "/recommend",
+			component: Recommend,//此处不需要引号
+		},
+		{
+			path: "/singer",
+			component: Singer,
+		},
+		{
+			path: "/rank",
+			component: Rank,
+		},
+		{
+			path: "/search",
+			component: Search
+		}
 	]
 })
-
-
-
-
-
-
-
 
