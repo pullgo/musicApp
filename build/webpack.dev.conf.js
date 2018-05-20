@@ -1,47 +1,63 @@
 'use strict'
 const utils = require('./utils')
-const webpack = require('webpack')//核心编译工具
-const config = require('../config')//配置文件 运行时和开发时所需要的配置的
 const merge = require('webpack-merge')//合并配置文件
 const baseWebpackConfig = require('./webpack.base.conf')//开发时候的配置文件和运行的的配置文件共享
 const HtmlWebpackPlugin = require('html-webpack-plugin')//webpack提供操作html插件
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const axios = require('axios')
 const portfinder = require('portfinder')
-
-const express = require('express')
-const app = express()//创建express应用程序
-
-var appData = require('../data.json')//加载本地数据文件
-var seller = appData.seller//获取对应的本地数据
-var goods = appData.goods//获取对应的本地数据
-var ratings = appData.ratings//获取对应的本地数据
-
-var apiRoutes = express.Router() // 获取一个 express 的路由实例
-
-apiRoutes.get('/seller', function (req,res) {
-  res.json({
-    errno:0,
-    data:seller
-  });
-});
-apiRoutes.get('/goods', function (req,res) {
-  res.json({
-    errno:0,
-    data:goods
-  });
-});
-apiRoutes.get('/ratings', function (req,res) {
-  res.json({
-    errno:0,
-    datta:ratings
-  });
-});
-
-app.use('/api',apiRoutes)
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+//检查node和npm的版本
+require('./check-versions')()
+
+//*获取config/index.js中的默认配置，config后面没有配置项会自动找index.js
+const config = require('../config')
+
+//如果Node环境无法判断是dev还是product环境则使用config.dev.env.NODE_ENV作为当前执行环境
+//if (!process.env.NOOE_ENV) {
+//  process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
+//}
+//一个可以强制打开浏览器并跳转到指定url的插件
+const opn = require('opn')
+
+//使用Node自带的文件路径工具
+const path = require('path')
+const express = require('express')
+const webpack = require('webpack')
+
+//http-proxy-middleware 单线程node.js代理中间件，用于连接，快速和浏览器同步
+const proxyMiddleware = require('http-proxy-middleware')
+
+const webpackConfig = require('./webpack.dev.conf')
+const axios = require('axios')
+
+const port = process.env.PORT || config.dev.port
+
+const autoOpenBrowser = !!config.dev.autoOpenBrowser
+
+const proxyTable = config.dev.proxyTable
+
+const app = express()
+
+const apiRoutes = express.Router()//apiRoutes不是apiRouters
+
+apiRoutes.get('/getDiscList', function (req, res) {
+  const url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
+  axios.get(url, {
+    headers: {
+      referer: 'https://c.y.qq.xcom/',
+      host: 'c.y.qq.com'
+    },
+    params: req.query
+  }).then((response) => {
+    res.json(response.data)
+  }).catch((e) => {
+    console.log(e)
+  })
+})
+
+app.use('api', apiRoutes)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -52,26 +68,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    before(app) {
-      app.get('/api/seller', function(req, res) {
-        res.json({
-          errno: 0,
-          data: seller//接口返回json数据，上面配置的数据seller就赋值给data请求后调用
-        })
-      });
-      app.get('/api/goods', function(req, res) {
-        res.json({
-          errno: 0,
-          data: goods
-        })
-      });
-      app.get('/api/ratings', function(req, res) {
-        res.json({
-          errno: 0,
-          data: ratings
-        })
-      });
-    },
     inline:true,
     port: 8001,
     clientLogLevel: 'warning',

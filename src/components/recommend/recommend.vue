@@ -1,6 +1,6 @@
 <template>
-	<div class="recommend">
-		<scroll ref="scroll" class="recommend-content">
+	<div class="recommend" ref="recommend">
+		<scroll ref="scroll" class="recommend-content" :data="discList">
 			<div>
 				<div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
 					<slider>
@@ -11,7 +11,7 @@
 						</div>
 					</slider>
 				</div>
-				<!--歌单推荐数据列表 未完-->
+				<!--歌单推荐数据列表-->
 				<div class="recommend-list">
 					<h1 class="list-title">热门歌单推荐</h1>
 					<ul>
@@ -47,26 +47,27 @@
 		created() {
 			this._getRecommend()
 
-			this._getDiscList
+			this._getDiscList()
 		},
 		methods: {
-			selectItem(item) {
-				this.$router.push({
-					path: `/recommend/${item.dissid}`
-				})
-				this.setDisc(item)
-			},
+      selectItem(item) {
+        this.$router.push({
+          path: `/recommend/${item.dissid}`
+        })
+        this.setDisc(item)
+      },
 			_getRecommend() {
-				getRecommend().then((res) => {//此处不能少() getRecommend()
+				getRecommend().then((res) => { //此处不能少() getRecommend()
 					if (res.code == ERR_OK) {
 						this.recommends = res.data.slider
 					}
 				})
 			},
 			_getDiscList() {
-				getDiscList().then((res) => {
+			 	getDiscList().then((res) => {
 					if (res.code === ERR_OK) {
 						this.discList = res.data.list
+						console.log(this.discList)
 					}
 				})
 			}

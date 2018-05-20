@@ -102,7 +102,7 @@
           }
           this.currentPageIndex = pageIndex
 
-          if (thisautoPlay) {
+          if (this.autoPlay) {//这里不要少个.
             this._play()
           }
         })
@@ -121,6 +121,9 @@
         if (this.loop) {
           pageIndex += 1
         }
+        this.timer = setTimeout(() => {
+          this.slider.goToPage(pageIndex, 0, 400)
+        }, this.interval)
       }
     }
   }

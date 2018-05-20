@@ -4,6 +4,7 @@ import App from './App'
 import router from './router'
 
 /* eslint-disable no-unused-vars */
+import 'common/stylus/index.styl'
 
 
 /* eslint-disable no-new */
